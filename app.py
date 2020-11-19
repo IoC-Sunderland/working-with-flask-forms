@@ -8,7 +8,15 @@ def sign_up():
     if request.method == "POST":
 
         req = request.form
-        print(req)
+        username = req.get("username")
+        email = req["email"]
+        password = request.form["password"]
+
+        description = (f"\nUsername is: {username}\n"
+                       f"Email is: {email}\n"
+                       f"Password is: {password}\n")
+        
+        print(description)
 
         return redirect(request.url)
 
