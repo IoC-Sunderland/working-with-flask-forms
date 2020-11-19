@@ -8,21 +8,17 @@ def sign_up():
 
     if request.method == "POST":
 
-        # Without capturing form data as 'req' variable
+        req = request.form
 
-        username = request.form.get("username")
-        email = request.form.get("email")
-        password = request.form.get("password")
+        missing = list()
 
-        print('\n', username, email, password)
+        for k, v in req.items():
+            if v == "":
+                missing.append(k)
 
-        # Alternatively
-
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-
-        print('\n', username, email, password, '\n')
+        if missing:
+            feedback = f"Missing fields for {', '.join(missing)}"
+            return render_template("sign_up.html", feedback=feedback)
 
         return redirect(request.url)
 
