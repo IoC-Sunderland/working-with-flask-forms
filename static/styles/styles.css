@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+}
+
+div.col{
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(214, 232, 235);
+  width: 25%;
+  padding: 10px;
+  
+}
+
+input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 15px 0;
+  box-sizing: border-box;
+  border: 2px solid #feb236;
+  border-radius: 4px;
+}
