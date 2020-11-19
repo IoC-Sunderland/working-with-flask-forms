@@ -5,18 +5,24 @@ app = Flask(__name__)
 # However it must be declared if the methods argument is provided.
 @app.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
+
     if request.method == "POST":
 
-        req = request.form
-        username = req.get("username")
-        email = req["email"]
+        # Without capturing form data as 'req' variable
+
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        print('\n', username, email, password)
+
+        # Alternatively
+
+        username = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
 
-        description = (f"\nUsername is: {username}\n"
-                       f"Email is: {email}\n"
-                       f"Password is: {password}\n")
-        
-        print(description)
+        print('\n', username, email, password, '\n')
 
         return redirect(request.url)
 
