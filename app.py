@@ -1,33 +1,33 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, g
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
-# Path to sqlite3 database
-DATABASE = 'data/test_database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/test_database.db'
+db = SQLAlchemy(app)
 
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-    return db
+# This defines your database table
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128))
 
+    # Define __repr__ that will be called when querying e.g. 'Users.query.all()'
+    def __repr__(self):
+        obj_repr = f'ID: {self.id},' \
+                   f'Username: {self.username},' \
+                   f'Email: {self.email},' \
+                   f'Password: {self.password}' \
 
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
+        return obj_repr
+
 
 @app.route('/')
 def index():
-    cur = get_db().cursor() #  Get the database cursor (this allows us to issue query statements)
-    select_all = cur.execute('SELECT * from users;')
-    rv = select_all.fetchall()
-    print('\n')
-    print(rv)
-    print('\n')
-    
-    return render_template('index.html', all_rows=rv)
+    # Display all records in db
+    return render_template('index.html', all_users=Users.query.all())
+
 
 # Flask routes support GET requests by default. 
 # However it must be declared if the methods argument is provided.
@@ -48,22 +48,18 @@ def sign_up():
             feedback = f"Missing fields for {', '.join(missing)}"
             return render_template("sign_up.html", feedback=feedback)
 
-        # Create entry in db using sign-up details
-        # E.g. INSERT INTO users VALUES (1,'Test User','test_user@email.com', 'password';
+        new_user = Users(username=req['username'],
+                         email=req['email'],
+                        password=req['password'])
 
-        username = req['username']
-        email = req['email']
-        password = req['password']
-        
-        SQL = f"INSERT INTO users VALUES (2, '{username}', '{email}', '{password}');"
-        print(SQL)
-        cur = get_db().cursor() #  Get the database cursor (this allows us to issue query statements)
-        cur.execute(SQL)
-        get_db().commit()
-        
+        print(new_user)
+        db.session.add(new_user)
+        db.session.commit()
+
         return redirect('/')
 
     return render_template("sign_up.html")
 
 
-app.run(debug=True, port=8080)
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
