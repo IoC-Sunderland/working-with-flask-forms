@@ -27,7 +27,7 @@ def index():
     print(rv)
     print('\n')
     
-    return render_template("sign_up.html")
+    return render_template('index.html', all_rows=rv)
 
 # Flask routes support GET requests by default. 
 # However it must be declared if the methods argument is provided.
