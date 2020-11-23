@@ -48,9 +48,22 @@ def sign_up():
             feedback = f"Missing fields for {', '.join(missing)}"
             return render_template("sign_up.html", feedback=feedback)
 
-        return redirect(request.url)
+        # Create entry in db using sign-up details
+        # E.g. INSERT INTO users VALUES (1,'Test User','test_user@email.com', 'password';
+
+        username = req['username']
+        email = req['email']
+        password = req['password']
+        
+        SQL = f"INSERT INTO users VALUES (2, '{username}', '{email}', '{password}');"
+        print(SQL)
+        cur = get_db().cursor() #  Get the database cursor (this allows us to issue query statements)
+        cur.execute(SQL)
+        get_db().commit()
+        
+        return redirect('/')
 
     return render_template("sign_up.html")
 
 
-app.run(debug=True)
+app.run(debug=True, port=8080)
