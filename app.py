@@ -26,7 +26,8 @@ class Users(db.Model):
 @app.route('/')
 def index():
     # Display all records in db
-    return render_template('index.html', all_users=Users.query.all())
+    all_users = Users.query.all()
+    return render_template('index.html', all_users=all_users)
 
 
 # Flask routes support GET requests by default. 
