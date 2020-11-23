@@ -2,9 +2,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: rgb(0, 0, 0);
 }
+
 div.container {
   margin: auto;
   width: 35%;
+  color: blueviolet;
   
 }
 
