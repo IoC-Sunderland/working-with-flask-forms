@@ -9,6 +9,10 @@ We then go on to style the form using CSS and add a database that we interact wi
 
 Take a look:
 
+**http://127.0.0.1:8080/sign-up**
+
 <img style="float: right;" src="img/sign-up-page-screenshot.png" size=250px>
+
+**http://127.0.0.1:8080/**
 
 <img style="float: right;" src="img/home-page-screenshot.png">
